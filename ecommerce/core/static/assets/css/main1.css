@@ -24,3 +24,13 @@
     @apply block w-full border border-gray-300 px-4 py-3 text-gray-600 text-sm rounded placeholder-gray-400 focus:border-primary focus:ring-0;
   }
 }
+
+.category-kawaii {
+    background-color: #df15bd;
+}
+
+.category-fantasy {
+    background-color: #20b3e4;
+}
+
+/* Add more for other categories */

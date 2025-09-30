@@ -43,9 +43,13 @@
             <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-lg">
                 <i class="fa-solid fa-magnifying-glass"></i>
             </span>
-            <input type="text" name="search" id="search"
-                   class="w-full border-2 border-[#fd3d57] border-r-0 pl-10 pr-3 py-2 md:py-3 rounded-l-md focus:outline-none focus:border-blue-600 text-sm md:text-base"
-                   placeholder="Search">
+        
+
+            <form method="get" action="{% url 'item:items' %}">
+            <input name="query" class="w-full border-2 border-[#fd3d57] border-r-0 pl-10 pr-3 py-2 md:py-3 rounded-l-md focus:outline-none focus:border-blue-600 text-sm md:text-base"
+             type="text" value="{{query}}" placeholder="Search">
+            </form>
+
             </div>
 
             <!-- Button -->
@@ -96,8 +100,8 @@
 
             <div class="flex items-center justify-between flex-grow md:pl-12 py-5">
                 <div class="flex items-center space-x-6 capitalize">
-                    <a href="index.html" class="text-gray-200 hover:text-white transition ml-4">Home</a>
-                    <a href="pages/shop.html" class="text-gray-200 hover:text-white transition">Shop</a>
+                    <a href="{% url 'index' %}" class="text-gray-200 hover:text-white transition ml-4">Home</a>
+                    <a href="{% url 'item:items' %}" class="text-gray-200 hover:text-white transition">Shop</a>
                     <a href="#" class="text-gray-200 hover:text-white transition">About us</a>
                     <a href="#" class="text-gray-200 hover:text-white transition">Contact us</a>
                 </div>

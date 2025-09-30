@@ -7,6 +7,14 @@
 1. Prevent padding and border from affecting element width. (https://github.com/mozdevs/cssremedy/issues/4)
 2. Allow adding a border to an element by just adding a border-width. (https://github.com/tailwindcss/tailwindcss/pull/116)
 */
+.category-kawaii {
+    background-color: #df15bd;
+}
+
+.category-fantasy {
+    background-color: #20b3e4;
+}
+
 
 *,
 ::before,
