@@ -1,0 +1,85 @@
+{% extends "core/base.html" %}
+
+{% load static %}
+
+{% block title %}Products - My Store{% endblock %}
+
+{% block content %}
+
+    <!-- login -->
+    <div class="contain py-16">
+        <div class="max-w-lg mx-auto shadow px-6 py-7 rounded overflow-hidden">
+            <h2 class="text-2xl uppercase font-medium mb-1">Login</h2>
+            <p class="text-gray-600 mb-6 text-sm">
+                welcome back customer
+            </p>
+            <form method="post" action=".">
+                {% csrf_token %}
+                
+                <div class="space-y-2">
+        
+                       <div>
+                        <label class="inline-block mb-2">Username</label><br>
+                            {{ form.username }}
+                        </div>
+                
+                    
+                        <div>
+                        <label class="inline-block mb-2">Email</label><br>
+                            {{ form.email }}
+                         </div>
+
+                        <div>
+                        <label class="inline-block mb-2">Password</label><br>
+                            {{ form.password }}
+                        </div>
+
+                        {% if form.errors or form.non_field_errors %}
+            <div class="mb-3 p-6 bg-red-100 rounded-xl">
+                {% for field in form %}
+                    {{field.errors}}
+                {% endfor %}
+
+                {{ form.non_field_errors }}
+            </div>
+        {% endif %}
+                    
+                </div>
+                <div class="flex items-center justify-between mt-6">
+                    <div class="flex items-center">
+                        <input type="checkbox" name="remember" id="remember"
+                            class="text-primary focus:ring-0 rounded-sm cursor-pointer">
+                        <label for="remember" class="text-gray-600 ml-3 cursor-pointer">Remember me</label>
+                    </div>
+                    <a href="#" class="text-primary">Forgot password</a>
+                </div>
+                <div class="mt-4">
+                     <button type="submit"
+                        style="background-color: #fd3d57;"
+                        class="w-full py-2 text-center text-white rounded hover:bg-transparent hover:text-primary transition">Login</button>
+                </div>
+            </form>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            <p class="mt-4 text-center text-gray-600">Don't have account? <a href="register.html"
+                    class="text-primary">Register
+                    now</a></p>
+        </div>
+    </div>
+    <!-- ./login -->
+
+   {% endblock %}
