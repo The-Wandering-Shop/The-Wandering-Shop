@@ -1,0 +1,60 @@
+{% extends "core/base.html" %}
+{% load static %}
+{% block title %}Products - My Store{% endblock %}
+
+{% block content %}
+
+<div class="container mx-auto px-4 pb-16">
+    {% if category %}
+        <h2 class="text-2xl font-medium text-gray-800 uppercase mb-6 mt-12">
+    {{ category.name }}
+</h2>
+
+    {% else %}
+
+            {% if query %}
+                <h2 class="text-2xl font-medium text-gray-800 uppercase mb-6 mt-12">Search Results for "{{ query }}"</h2>
+            {% else %}
+                <h2 class="text-2xl font-medium text-gray-800 uppercase mb-6 mt-12">All Products</h2>
+            {% endif %}
+
+    {% endif %}
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+        
+        {% for item in items %}
+
+            <div class="p-4 rounded-xl overflow-hidden flex flex-col shadow-[0_0_10px_rgba(0,0,0,0.20)] hover:shadow-[0_0_15px_rgba(0,0,0,0.30)] transition">
+    
+            <a href="{% url 'item:detail' item.category.slug item.slug %}" class="block">
+        
+                {% if item.image %}
+                <img src="{{ item.image.url }}" alt="{{ item.name }}" class="w-full h-auto max-h-60 object-contain mx-auto">
+                {% endif %}
+
+                <div class="p-6 flex-1 flex flex-col justify-between">
+                    <div>
+                        <h2 class="text-2xl font-semibold mb-2">{{ item.name }}</h2>
+                        <p class="text-gray-500 mb-4">Price: ${{ item.price }}</p>
+                    </div>
+                    <a href="#" class="relative z-20">
+                        <button type="button"
+                            style="background-color: #fd3d57;"
+                            class="w-full py-2 text-center text-white rounded hover:bg-transparent hover:text-primary transition">
+                            Add to cart
+                        </button>
+                    </a>
+                </div>
+
+            </div>
+    
+            </a>
+
+        {% endfor %}
+
+    </div>
+    
+</div>
+
+
+{% endblock %}
