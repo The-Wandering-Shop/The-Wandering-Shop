@@ -1,0 +1,296 @@
+{% extends 'core/base.html' %}
+{% load static %}
+{% block content %}
+
+
+
+
+ <!-- wrapper -->
+  
+<div class="flex-grow grid grid-cols-3 sm:grid-cols-2 md:grid-cols-3 gap-6">
+<div class="container grid grid-cols-2 items-start gap-6 pt-4 pb-16">
+
+        <!-- sidebar -->
+        <div class="col-span-3">
+            <div class="px-4 py-3 shadow flex items-center gap-4">
+                <div class="flex-shrink-0">
+                    
+                </div>
+                <div class="flex-grow">
+                  
+                    <h4 class="text-gray-800 font-medium">Welcome</h4>
+                </div>
+            </div>
+
+            <div class="mt-6 bg-white shadow rounded p-4 divide-y divide-gray-200 space-y-4 text-gray-600">
+                <div class="space-y-1 pl-8">
+                    <a href="#" class="relative text-primary block font-medium capitalize transition">
+                        <span class="absolute -left-8 top-0 text-base">
+                            <i class="fa-regular fa-address-card"></i>
+                        </span>
+                        Products Quality
+                    </a>
+                    <a href="#" class="relative hover:text-primary block capitalize transition">
+                        Size Guides
+                    </a>
+                    <a href="#" class="relative hover:text-primary block capitalize transition">
+                        Returns Policy
+                    </a>
+
+                </div>
+
+                <div class="space-y-1 pl-8 pt-4">
+                    <a href="#" class="relative hover:text-primary block font-medium capitalize transition">
+                        <span class="absolute -left-8 top-0 text-base">
+                            <i class="fa-solid fa-box-archive"></i>
+                        </span>
+                         Shipping 
+                    </a>
+                    <a href="#" class="relative hover:text-primary block capitalize transition">
+                        Shipping Policy 
+                    </a>
+                    <a href="#" class="relative hover:text-primary block capitalize transition">
+                        24hr Shipping
+                    </a>
+
+                </div>
+
+                <div class="space-y-1 pl-8 pt-4">
+                    <a href="#" class="relative hover:text-primary block font-medium capitalize transition">
+                        <span class="absolute -left-8 top-0 text-base">
+                            <i class="fa-regular fa-credit-card"></i>
+                        </span>
+                        Payment methods
+                    </a>
+                    <a href="#" class="relative hover:text-primary block capitalize transition">
+                        Vouchers
+                    </a>
+                </div>
+
+                <div class="space-y-1 pl-8 pt-4">
+                    <button  id="showFormBtn" onclick="toggleForm()"class="relative hover:text-primary block font-medium capitalize transition">
+                        <span class="absolute -left-8 top-0 text-base"></span>
+                        Complaint 
+                    </button>
+                </div>
+            </div>
+        </div>
+        <!-- ./sidebar -->
+
+        <!-- contact details -->
+
+
+         <!-- ./contact details-->
+
+
+
+
+        <!-- info -->
+    <div id="formContainer" class="col-span-8 {% if not success %}hidden{% endif %}">
+
+         {% if success %}
+            <p class="text-green-600 font-semibold bg-color-white text-center mb-4">
+                Your complaint was submitted successfully!
+            </p>
+        {% endif %}
+
+    <form id="contactForm" method="post" novalidate>
+            {% csrf_token %}
+            {{ form.non_field_errors }}
+        
+        <div class="mb-4">
+            <label class="block font-semibold">Name:</label>
+            {% comment %} <input name="name" type="text" class="w-full border rounded px-3 py-2" required> {% endcomment %}
+            {{form.name.errors}}
+            {{ form.name }}
+        </div>
+
+        <div class="mb-4">
+            <label class="block font-semibold">Email:</label>
+            {% comment %} <input name="email" type="email" class="w-full border rounded px-3 py-2" required> {% endcomment %}
+                {{  form.email.errors }}
+                {{ form.email  }}
+        </div>
+
+        <div class="mb-4">
+            <label class="block font-semibold">Order Number (6-digit):</label>
+            {% comment %} <input name="order_number" type="text" maxlength="6" class="w-full border rounded px-3 py-2" required> {% endcomment %}
+            {{ form.order_number.errors }}
+            {{ form.order_number }}
+        
+        </div>
+
+        <div class="mb-4">
+            <label class="block font-semibold">Subject:</label>
+            {% comment %} <input name="subject" type="text" class="w-full border rounded px-3 py-2" required> {% endcomment %}
+            {{ form.subject.errors  }}
+            {{ form.subject }}
+
+        </div>
+
+        <div class="mb-4">
+            <label class="block font-semibold">Message:</label>
+            {% comment %} <textarea name="message" rows="5" class="w-full border rounded px-3 py-2" required></textarea>{% endcomment %}
+            {{ form.message.errors }}
+            {{ form.message }}
+        </div>
+
+        <div class="flex justify-between items-center">
+            <!---Submit Button-->
+            <button type="submit" class="likeBtn text-yellow-400 hover:text-red-500 transition duration-200">Submit</button>
+            <!---Close Button(hidden initially)-->
+            <button id="closeFormBtn" type="button" class="text-red-600 hover:underline hidden">Close Form</button>
+    </form>
+        <!-- ./info -->
+</div>
+</div>
+</div>
+    <!-- ./wrapper -->
+
+ 
+{% block script %}
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        const form = document.getElementById("contactForm");
+        const formContainer = document.getElementById("formContainer");
+        const showFormBtn = document.getElementById("showFormBtn");
+        const closeFormBtn = document.getElementById("closeFormBtn");
+
+        // Show form function (if you have a button to open form)
+        window.toggleForm = function () {
+            formContainer.classList.remove("hidden");
+            showFormBtn.classList.add("hidden");
+            closeFormBtn.classList.remove("hidden");
+        };
+
+        closeFormBtn.addEventListener("click", () => {
+            formContainer.classList.add("hidden");
+            showFormBtn.classList.remove("hidden");
+            closeFormBtn.classList.add("hidden");
+            form.reset();
+        });
+
+        form.addEventListener("submit", (e) => {
+            const name = form.querySelector('[name="name"]').value.trim();
+            const email = form.querySelector('[name="email"]').value.trim();
+            const order = form.querySelector('[name="order_number"]').value.trim();
+            const subject = form.querySelector('[name="subject"]').value.trim();
+            const message = form.querySelector('[name="message"]').value.trim();
+
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            const nameRegex = /^[A-Za-z\s]+$/;
+
+            if (!name || !email || !order || !subject || !message) {
+                alert("All fields are required.");
+                e.preventDefault();
+                return;
+            }
+
+            if (!nameRegex.test(name)) {
+                alert("Name must contain only letters and spaces.");
+                e.preventDefault();
+                return;
+            }
+
+            if (!emailRegex.test(email)) {
+                alert("Please enter a valid email address.");
+                e.preventDefault();
+                return;
+            }
+
+            if (!/^\d{6}$/.test(order)) {
+                alert("Order number must be exactly 6 digits.");
+                e.preventDefault();
+                return;
+            }
+
+            if (message.length < 10) {
+                alert("Message must be at least 10 characters.");
+                e.preventDefault();
+                return;
+            }
+            // No need to do anything else — let Django handle final submission
+        });
+    });
+</script>
+{% endblock %}
+
+       
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+{% endblock %}

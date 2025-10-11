@@ -1,0 +1,124 @@
+{% extends 'core/base.html' %}
+
+{% block title%}{{ item.name }}{% endblock %}
+
+{% block content %}
+    <div class="border-2 border-gray-900 container mt-10 mx-auto px-4 grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        
+        <div>
+            <img src="{{ product.image.url }}" class="w-96 rounded-xl">
+        </div>
+
+        <div class="col-span-2 p-6 rounded-b-xl">
+            <h1 class="mb-6 text-3xl">{{ product.name }}</h1>
+            <p class="text-gray-500"><strong>Price: </strong>{{ product.price }}</p><br>
+
+            {% if product.details.exists %}
+                <h2 class="mt-8 mb-2 text-xl font-semibold">Product Details</h2>
+                <table class="min-w-full table-auto border border-gray-300 rounded-lg">
+                    <thead class="bg-gray-100 text-left">
+                        <tr>
+                            <th class="px-4 py-2 border">Label</th>
+                            <th class="px-4 py-2 border">Value</th>
+                        <tr>
+                        </thead>
+                        <tbody>
+                            {% for detail in product.details.all %}
+                                <td class="px-4 py-2 border">{{detail.label}}</td>
+                                <td class="px-4 py-2 border">{{detail.label}}</td>
+                        </tr>
+                    {% endfor %}
+                </table>
+                {% endif %}
+            
+        </div>
+    </div>
+
+
+   <div class="container w-full max-w-4xl mx-auto mt-10 px-4 space-y-8">
+
+    <!-- Reviews Section -->
+    <div>
+        <h4 class="text-xl font-semibold">Reviews ({{ reviews.count }})</h4>
+
+        <div class="grid grid-cols-1 gap-6">
+            {% for review in reviews %}
+                {% if review.review %}
+                <div class="p-6 border border-gray-400 rounded-lg bg-white shadow-sm">
+                    <p class="text-yellow-600 font-medium">{{ review.get_rating_display }}</p>
+                    <p class="text-sm text-gray-700"><strong>{{ review.name }}</strong> - {{ review.date|date:"d M Y" }}</p>
+                    <p class="mt-2 text-gray-800">{{ review.review }}</p>
+                </div>
+                {% endif %}
+            {% empty %}
+                <p class="text-gray-600">No reviews yet.</p>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Review Form Section -->
+    <div class="p-6 border border-teal-500 bg-teal-50 rounded-lg shadow-md">
+        <h4 class="text-lg font-semibold mb-4">Leave a Review</h4>
+
+        <form method="post" action="." enctype="multipart/form-data" class="space-y-4">
+            {% csrf_token %}
+            {{ form.as_p }}
+
+            {% if form.errors or form.non_field_errors %}
+                <div class="p-4 bg-red-100 rounded">
+                    {% for field in form %}
+                        {{ field.errors }}
+                    {% endfor %}
+                    {{ form.non_field_errors }}
+                </div>
+            {% endif %}
+
+            <button class="mt-4 py-2 px-6 bg-teal-600 text-white rounded hover:bg-teal-700">
+                Submit
+            </button>
+        </form>
+    </div>
+
+</div>
+
+
+
+    <div class="mt-6 px-6 py-12 bg-gray-100 rounded-xl">
+
+        <h2 class="mb-12 text-2xl text-center">Related items</h2>
+
+        <div class="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-3 gap-6">
+
+            {% for item in related_items %}
+
+                <div class="p-4 rounded-xl">
+
+                    <a href="{% url 'item:detail' item.category.slug item.slug %}">
+
+                        <div>
+                            {% if item.image %}
+                                <img src="{{ item.image.url }}" class="w-full h-auto max-h-60 object-contain mx-auto">
+                            {% endif %}
+                        </div>
+
+                        <div class="p-6 bg-white rounded-b-xl">
+                            <h2 class="text-2xl font-semibold mb-2">{{ item.name }}</h2>
+                            <p class="text-gray-500">Price: {{ item.price }}</p>
+                        </div>
+                        <a href="#" class="relative z-20">
+                            <button type="button"
+                                style="background-color: #fd3d57;"
+                                class="w-full py-2 text-center text-white rounded hover:bg-transparent hover:text-primary transition">
+                                Add to cart
+                            </button>
+                        </a>
+                    </a>
+                </div>
+
+            {% endfor %}
+
+        </div>
+
+    </div>
+    
+{% endblock %}
