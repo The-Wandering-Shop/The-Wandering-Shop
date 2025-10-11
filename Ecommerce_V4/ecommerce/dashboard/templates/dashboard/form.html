@@ -1,0 +1,81 @@
+{% extends 'core/base.html' %}
+
+{% block title %}{{title}}{% endblock %}
+
+{% block content %}
+    
+
+<h1 class="m-10 mb-6 text-3xl">{{title}}</h1>
+
+<div class="container mx-auto px-4 py-8">
+
+    {% if edit %}
+  
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+
+ <div class="border-2 border-gray-900 container mt-10 mx-auto px-4 grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        
+        <div>
+            <img src="{{ product.image.url }}" class="w-48 rounded-xl">
+        </div>
+
+        <div class="col-span-2 p-6 rounded-b-xl">
+            <h1 class="mb-6 text-3xl">{{ product.name }}</h1>
+            <p class="text-gray-500"><strong>Price: </strong>{{ product.price }}</p>
+            
+        </div>
+    </div>
+
+
+    <div style="font-family: 'Helvetica Neue', Helvetica, Roboto, Arial, sans-serif;" 
+        class="container w-full max-w-4xl mx-auto mt-10 px-4 rounded-lg p-4 border border-black border-opacity-50">
+
+
+    <h4>Reviews ({{ reviews.count }})</h4>
+
+    {% for review in reviews %}
+        {% if review.review %}
+        <div class="w-full my-4 py-4 px-10 rounded-xl border border-black">
+            <p class="mb-3">{{ review.get_rating_display }}</p>
+            <!-- get_FIELD_display() is a built-in Django method that returns the label for the stored value. -->
+        
+            <p class="mb-2"><strong>{{ review.name }} - {{ review.date|date:"d M Y" }}</strong></p>
+
+            <p class="mb-2">{{ review.review }}</p>
+        </div>
+        {% endif %}
+    {% endfor %}
+
+    </div> 
+
+    {% endif %}
+
+    <div style="font-family: 'Helvetica Neue', Helvetica, Roboto, Arial, sans-serif;" 
+        class="container w-full max-w-4xl mx-auto mt-10 px-4 rounded-lg p-4 border border-black border-opacity-50">
+
+<form method="post" action="." enctype="multipart/form-data">
+    {% csrf_token %} 
+
+    <div class="space-y-4">
+        {{ form.as_p }}
+    </div>
+
+    {% if form.errors or form.non_field_errors %}
+        <div class="mb-3 p-6 bg-red-100 rounded-xl">
+            {% for field in form %}
+                {{field.errors}}
+            {% endfor %}
+
+            {{ form.non_field_errors }}
+        </div>
+    {% endif %}
+
+    <button class="mt-6 py-4 px-8 text-lg bg-teal-500 hover:bg-teal-700 rounded-xl text-white">Submit</button>
+</form>
+
+</div>
+
+ </div>
+</div>
+
+{% endblock %}
