@@ -1,0 +1,30 @@
+{% extends 'core/base.html' %}
+
+{% block title%}All users{% endblock %}
+
+{% block content %}
+    
+<div class="my-5 flex justify-center items-center">
+    <h1>All Registered Users</h1>
+</div>
+
+
+<table class="min-w-full border border-gray-900">
+    <thead>
+        <tr class="bg-gray-200">
+            <th class="px-4 py-2 border border-1 border-gray-400">Username</th>
+            <th class="px-4 py-2 border border-1 border-gray-400">Email</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for user in users %}
+        <tr class="border-t">
+            <td class="px-4 py-2 border border-1 border-gray-400 text-center">{{ user.username }}</td>
+            <td class="px-4 py-2 border border-1 border-gray-400 text-center">{{ user.email }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+
+{% endblock %}
