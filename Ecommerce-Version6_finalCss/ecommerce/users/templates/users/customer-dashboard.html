@@ -1,0 +1,169 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+<div class="container grid grid-cols-12 items-start gap-6 pt-4 pb-16">
+
+  <!-- sidebar -->
+  <div class="col-span-3 pl-10 pt-10">
+    <div class="px-4 py-3 shadow flex items-center gap-4">
+      <div class="flex-shrink-0">
+        <div class="text-2xl">
+          <i class="fa-regular fa-user"></i>
+        </div>
+      </div>
+      <div class="flex-grow">
+        <p class="text-yellow-400">Hello,</p>
+        <h4 class="text-gray-800 font-medium">{{ user.username }}</h4>
+      </div>
+    </div>
+
+    <div class="mt-6 bg-white shadow rounded p-4 divide-y divide-gray-900 space-y-4 text-gray-900">
+
+      <div class="space-y-1 pl-8 pt-4">
+        <a href="#" class="relative hover:text-primary block font-medium capitalize transition">
+          <span class="absolute -left-8 top-0 text-base">
+            <i class="fa-regular fa-credit-card"></i>
+          </span>
+          Payment methods
+        </a>
+        <a href="#" class="relative hover:text-primary block capitalize transition">
+          Voucher
+        </a>
+      </div>
+    </div>
+  </div>
+  <!-- ./sidebar -->
+
+  <!-- main content -->
+  <div class="col-span-9 pt-10">
+    <div class="contain">
+      <div class="max-w-lg mx-auto shadow px-6 py-7 rounded overflow-hidden">
+        <h2 class="text-2xl uppercase font-medium mb-1">Profile Update</h2>
+        <p class="text-gray-600 mb-6 text-sm">
+          Update your profile details
+        </p>
+
+        <form id="form" method="post" action="." novalidate>
+          {% csrf_token %}
+          <div class="space-y-4">
+
+            <div>
+              <label class="inline-block mb-2">First Name</label>
+              {{ form.first_name }}
+               <div id="error-firstname" class="text-red-600 text-sm mt-1"></div>
+            </div>
+
+            <div>
+              <label class="inline-block mb-2">Last Name</label>
+              {{ form.last_name }}
+              <div id="error-lastname" class="text-red-600 text-sm mt-1"></div>
+            </div>
+
+            <div>
+              <label class="inline-block mb-2">Phone</label>
+              {{ form.phone }}
+              <div id="error-phone" class="text-red-600 text-sm mt-1"></div>
+            </div>
+
+            <div>
+              <label class="inline-block mb-2">Birthday</label>
+              {{ form.birthday }}
+               <div id="error-birthday" class="text-red-600 text-sm mt-1"></div>
+            </div>
+
+            <div>
+            <label class="inline-block mb-2">Gender</label>
+            {{ form.gender }}
+            <div id="error-gender" class="text-red-600 text-sm mt-1"></div>
+            </div>
+
+          </div>
+
+          <div class="mt-6">
+            <button type="submit"
+                    style="background-color: #fcc200;"
+                    class="w-full py-2 text-center text-white rounded hover:bg-transparent hover:text-gray-900 transition">
+              Save
+            </button>
+          </div>
+
+
+          <noscript>
+                <div class="mb-3 p-6 bg-red-100 rounded-xl mt-4">
+                {% for field in form %}
+                    {{ field.errors }}
+                {% endfor %}
+                {{ form.non_field_errors }}
+                </div>
+            </noscript
+         
+        </form>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+   
+document.addEventListener('DOMContentLoaded', () => {
+
+    const form = document.getElementById('form');
+    const firstname = document.getElementById('id_firstname');
+    const lastname = document.getElementById('id_lastname');
+    const phone = document.getElementById('id_phone');
+    const birthday = document.getElementById('id_birthday');
+    const gender = document.getElementById('id_gender');
+
+
+    const errorFirstname = document.getElementById('error-firstname');
+    const errorLastname = document.getElementById('error-lastname');
+    const errorPhone = document.getElementById('error-phone');
+    const errorBirthday = document.getElementById('error-birthday');
+    const errorGender = document.getElementById('error-gender');
+    
+
+    form.addEventListener('submit', function(e) {
+        
+        if (errorFirstname) errorFirstname.textContent = '';
+        if (errorLastname) errorLastname.textContent = '';
+        if (errorPhone) errorPhone.textContent = '';
+        if (errorBirthday) errorBirthday.textContent = '';
+
+        let hasErrors = false;
+
+        if (!firstname.value.trim()) {
+            errorFirstname.textContent = 'Please enter your first name.';
+            hasErrors = true;
+        }
+
+        if (!lastname.value.trim()) {
+            errorLastname.textContent = 'Please enter your last name.';
+            hasErrors = true;
+        }
+
+        if (!phone.value.trim()) {
+          errorPhone.textContent = 'Please enter your phone number.';
+          hasErrors = true;
+        }
+
+        if (!birthday.value.trim()) {
+          errorBirthday.textContent = 'Please input your date of birth.';
+          hasErrors = true;
+        }
+
+        if (!gender.value) {
+          errorGender.textContent = 'Please select your gender.';
+          hasErrors = true;
+        }
+
+
+        if (hasErrors) {
+            e.preventDefault(); 
+        }
+    });
+});
+
+</script>
+
+{% endblock %}
