@@ -1,0 +1,147 @@
+{% extends 'core/base.html' %}
+
+{% block title %}{{title}}{% endblock %}
+
+{% block content %}
+    
+
+<h1 class="ml-10 px-5 mt-5 text-2xl font-medium text-gray-800 uppercase">{{title}}</h1>
+
+<div class="container mx-auto px-4 py-8">
+
+    {% if edit %}
+  
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+
+ <div class="container mt-10 mx-auto px-4 grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        
+    <div>
+            <img src="{{ product.image.url }}" class="w-full max-w-xs rounded-xl mt-5 object-contain">
+        </div>
+
+        <div class="col-span-2 p-6 rounded-b-xl">
+            <h1 class="mb-6 text-3xl">{{ product.name }}</h1>
+            <p class="text-gray-500"><strong>Price: </strong>{{ product.price }}</p>
+            
+        
+        {% if product.description %}
+            <p class="mt-7 text-gray-700">
+                <strong class="text-gray-700">Description: </strong><br>
+                {{ product.description }}
+            </p>
+        {% endif %}
+
+        </div>
+
+        
+
+        {% if product.details.exists %}
+                
+            <div>
+                <h2 class="mt-8 mb-2 text-xl font-semibold">Product Details</h2>
+    
+                <table class="mb-10 w-full table-auto border border-1 border-gray-500 rounded-lg">
+                    <thead class="bg-gray-100 text-left">
+                        <tr>
+                            <th class="px-4 py-2 border border-1 border-gray-500">Label</th>
+                            <th class="px-4 py-2 border border-1 border-gray-500">Value</th>
+                        <tr>
+                        </thead>
+                        <tbody>
+                            {% for detail in product.details.all %}
+                                <td class="px-4 py-2 border border-1 border-gray-500">{{detail.label}}</td>
+                                <td class="px-4 py-2 border border-1 border-gray-500">{{detail.value}}</td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        {% endif %}
+        
+</div>
+
+
+    <div style="font-family: 'Helvetica Neue', Helvetica, Roboto, Arial, sans-serif;" 
+        class="container w-full max-w-4xl mx-auto mt-10 px-4 rounded-lg p-4 border border-yellow border-opacity-50">
+
+
+    <h4>Reviews ({{ reviews.count }})</h4>
+
+    {% for review in reviews %}
+        {% if review.review %}
+        <div class="w-full my-4 py-4 px-10 rounded-xl border border-black border-opacity-50">
+            <p class="mb-3">{{ review.get_rating_display }}</p>
+            <!-- get_FIELD_display() is a built-in Django method that returns the label for the stored value. -->
+        
+            <p class="mb-2"><strong>{{ review.name }} - {{ review.date|date:"d M Y" }}</strong></p>
+
+            <p class="mb-2">{{ review.review }}</p>
+        </div>
+        {% endif %}
+    {% endfor %}
+
+    </div> 
+
+    {% endif %}
+
+    <div style="font-family: 'Helvetica Neue', Helvetica, Roboto, Arial, sans-serif;" 
+        class="container w-full max-w-4xl mx-auto mt-10 px-4 rounded-lg p-4 border-gray-900">
+
+
+<form method="post" action="." enctype="multipart/form-data">
+    {% csrf_token %}
+
+    <div class="space-y-4">
+        {{ form.as_p }}
+    </div>
+
+    <h3 class="mt-8 mb-4 text-xl font-semibold">Product Details</h3>
+    {{ formset.management_form }}
+    <div class="space-y-6">
+        {% for detail_form in formset %}
+            <div class="border border-gray-300 rounded-xl p-4">
+                {{ detail_form.id }}  {# Hidden input for existing details #}
+                
+                <div class="mb-4">
+                    {{ detail_form.label.label_tag }}
+                    {{ detail_form.label }}
+                    {% if detail_form.label.errors %}
+                        <p class="text-red-600">{{ detail_form.label.errors }}</p>
+                    {% endif %}
+                </div>
+
+                <div class="mb-4">
+                    {{ detail_form.value.label_tag }}
+                    {{ detail_form.value }}
+                    {% if detail_form.value.errors %}
+                        <p class="text-red-600">{{ detail_form.value.errors }}</p>
+                    {% endif %}
+                </div>
+
+                {% if formset.can_delete %}
+                    <div>
+                        {{ detail_form.DELETE }} <label for="{{ detail_form.DELETE.id_for_label }}">Delete</label>
+                    </div>
+                {% endif %}
+            </div>
+        {% endfor %}
+    </div>
+
+    {% if form.errors or form.non_field_errors %}
+        <div class="mb-3 p-6 bg-red-100 rounded-xl">
+            {% for field in form %}
+                {{field.errors}}
+            {% endfor %}
+            {{ form.non_field_errors }}
+        </div>
+    {% endif %}
+
+    <button class="bg-gradient-to-r from-yellow-500 to-yellow-300 mt-6 py-4 px-8 text-lg bg-yellow-400 hover:text-gray-900 rounded-xl text-white">Submit</button>
+</form>
+
+
+</div>
+
+ </div>
+</div>
+
+{% endblock %}

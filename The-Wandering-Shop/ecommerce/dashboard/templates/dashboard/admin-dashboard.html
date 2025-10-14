@@ -1,0 +1,47 @@
+{% extends 'core/base.html' %}
+
+{% block title%}{{ item.name }}{% endblock %}
+
+{% block content %}
+
+<div class="flex justify-center items-center">
+    <a href="{% url 'dashboard:new' %}" class="hover:text-gray-900 bg-gradient-to-r from-yellow-500 to-yellow-300 my-10 text-white px-4 py-2 rounded">Add New Product</a>
+</div>
+
+ <table class="min-w-full border border-gray-500">
+    <thead>
+        <tr class="bg-gray-100">
+            <th class="px-4 py-2 border">Category</th>
+            <th class="px-4 py-2 border">Item Name</th>
+            <th class="px-4 py-2 border">Price</th>
+            <th class="px-4 py-2 border">Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for product in products %}
+        <tr class="border-t">
+            <td class="px-4 py-2 border text-center">{{ product.category }}</td>
+            <td class="px-4 py-2 border text-center">{{ product.name }}</td>
+            <td class="px-4 py-2 border text-center">R {{ product.price }}</td>
+            <td class="px-4 py-2 border text-center ">
+                <div class="flex flex-col sm:flex-row sm:justify-center gap-2">
+                    {% if request.user.is_superuser or request.user.is_staff %}
+                        <a href="{% url 'dashboard:edit' product.id %}" class="bg-yellow-400 text-white hover:text-gray-900 px-4 py-2 rounded">Edit</a>
+                        <a href="{% url 'dashboard:delete' product.id %}" class="bg-yellow-400 text-white hover:text-gray-900 px-4 py-2 rounded">Delete</a>
+                    {% endif %}
+                </div>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<div class="flex justify-center items-center">
+    <a href="{% url 'dashboard:all-users' %}" class="hover:text-gray-900 bg-gradient-to-r from-yellow-500 to-yellow-300 my-10 text-white px-4 py-2 rounded">See all users</a>
+</div>
+
+<div class="flex justify-center items-center">
+    <a href="{% url 'dashboard:customer-complaints' %}" class="hover:text-gray-900 bg-gradient-to-r from-yellow-500 to-yellow-300 my-10 text-white px-4 py-2 rounded">See all customer complaints</a>
+</div>
+    
+{% endblock %}
