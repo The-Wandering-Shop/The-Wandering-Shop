@@ -14,18 +14,19 @@ class ReviewForm(forms.ModelForm):
         fields = ('name', 'email', 'review', 'rating')
         widgets = {
             'name':forms.TextInput(attrs={
-                'class':'form-control',
-                'class' : INPUT_CLASSES,
+                'class': f'form-control {INPUT_CLASSES}',
+                'id' : 'name'
             }),
             'email':forms.TextInput(attrs={
-                'class':'form-control',
-                'class' : INPUT_CLASSES,
+                'class': f'form-control {INPUT_CLASSES}',
+                'id' : 'email'
             }),
             'review':forms.Textarea(attrs={
-                'class':'form-control',
-                'class' : INPUT_CLASSES,
+                'class':  f'form-control {INPUT_CLASSES}',
+                'id' : 'review'
             }),
             'rating': forms.Select(attrs={
                 'class': INPUT_CLASSES,
+                'id' : 'rating'
             })
         }

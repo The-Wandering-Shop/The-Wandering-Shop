@@ -105,10 +105,31 @@
     <div class="p-6 bg-white border border-yellow-500 rounded-lg shadow">
         <h4 class="text-lg font-semibold mb-4">Leave a Review</h4>
 
-        <form method="post" action="." enctype="multipart/form-data" class="space-y-4">
+        <form id="form" method="post" action="." class="space-y-4" novalidate>
             {% csrf_token %}
-            {{ form.as_p }}
 
+            <div>
+                <label class="inline-block mb-2">Name</label><div id="error-name" class="text-red-600 text-sm mt-1"></div>
+                {{ form.name }}
+            </div>
+
+            <div>
+                <label class="inline-block mb-2">Email</label><div id="error-email" class="text-red-600 text-sm mt-1"></div>
+                {{ form.email }}
+            </div>
+
+            <div>
+                <label class="inline-block mb-2">Review</label><div id="error-review" class="text-red-600 text-sm mt-1"></div>
+                {{ form.review }}
+            </div>
+
+            <div>
+                <label class="inline-block mb-2">Rating</label><div id="error-rating" class="text-red-600 text-sm mt-1"></div>
+                {{ form.rating }}
+            </div>
+    
+  
+            <noscript>
             {% if form.errors or form.non_field_errors %}
                 <div class="p-4 bg-red-100 rounded">
                     {% for field in form %}
@@ -117,6 +138,7 @@
                     {{ form.non_field_errors }}
                 </div>
             {% endif %}
+            </noscript>
 
             <button class="mt-4 py-2 px-6 bg-yellow-400 text-white rounded hover:text-gray-900">
                 Submit
@@ -203,5 +225,62 @@
         </div>
 
     </div>
+
+    <script>
+   
+        document.addEventListener('DOMContentLoaded', () => {
+        
+            const form = document.getElementById('form');
+            const name = document.getElementById('name');
+            const email = document.getElementById('email');
+            const rating = document.getElementById('rating');
+            const review = document.getElementById('review');
+        
+            const errorName = document.getElementById('error-name');
+            const errorEmail = document.getElementById('error-email');
+            const errorReview = document.getElementById('error-review');
+            const errorRating = document.getElementById('error-rating');
+           
+        
+            form.addEventListener('submit', function(e) {
+                
+                if (errorName) errorName.textContent = '';
+                if (errorEmail) errorEmail.textContent = '';
+                if (errorReview) errorReview.textContent = '';
+                if (errorRating) errorRating.textContent = '';
+                
+                let hasErrors = false;
+        
+                if (!name.value.trim()) {
+                    errorName.textContent = 'Please enter your name.';
+                    hasErrors = true;
+                }
+
+                if (!email.value.trim()) {
+                    errorEmail.textContent = 'Please enter your email.';
+                    hasErrors = true;
+                } else if (!email.value.trim().includes('@')) {
+                    errorEmail.textContent = 'Please enter a valid email address containing an @ symbol.';
+                    hasErrors = true;
+                }
+
+                if (!review.value.trim()) {
+                    errorReview.textContent = 'Please enter your review.';
+                    hasErrors = true;
+                }
+
+                if (!rating.value.trim()) {
+                    errorRating.textContent = 'Please choose your rating.';
+                    hasErrors = true;
+                }
+        
+        
+                if (hasErrors) {
+                    e.preventDefault(); 
+                }
+            });
+        });
+
+    </script>
     
 {% endblock %}

@@ -58,15 +58,16 @@ def detail(request, category_slug, product_slug):
             new_review.product = product
             new_review.username = request.user
             new_review.save()
-            return redirect('product:detail', category_slug=category.slug, product_slug=product.slug)
+            form = ReviewForm(instance=new_review)
     else:
         form = ReviewForm()
 
     return render(request, 'products/detail.html', {
         'product': product,
-        'reviews': reviews,   # pass queryset with plural name
+        'reviews': reviews,  
         'form': form,
         'related_products': related_products,
     })
+
 
 
